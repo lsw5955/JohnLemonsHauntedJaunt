@@ -13,10 +13,12 @@ public class PlayerMovement : MonoBehaviour
 
     int test;
 
+    AudioSource m_AudioSource;
 
     // Start is called before the first frame update
     void Start()
     {
+        m_AudioSource = GetComponent<AudioSource>();
         m_Animator = GetComponent<Animator>();
         m_Rigidbody = GetComponent<Rigidbody>();
         test = 0;
@@ -52,6 +54,15 @@ public class PlayerMovement : MonoBehaviour
         bool hasVerticalInput = !Mathf.Approximately(vertical, 0f);
         bool isWalking = hasHorizontalInput || hasVerticalInput;
         m_Animator.SetBool("IsWalking", isWalking);
+
+        if (isWalking)
+        {
+            m_AudioSource.Play();
+        }
+        else
+        {
+            m_AudioSource.Stop();
+        }
 
         Vector3 desiredForward = Vector3.RotateTowards(transform.forward, m_Movement, turnSpeed * Time.deltaTime, 0f);
         m_Rotation = Quaternion.LookRotation(desiredForward);
